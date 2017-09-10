@@ -15,6 +15,7 @@ function! Layers()
   Layer 'c-c++'
   Layer 'syntax-checking'
   Layer 'auto-completion'
+  "Layer 'ycmd'
   Layer 'code-snippets'
   Layer 'deoplete'
   Layer 'markdown'
@@ -61,8 +62,11 @@ function! UserConfig()
   " color molokai
   " color desert
 
-   "nnoremap <Leader><Leader>  <Plug>(fzf-maps-n)
    nnoremap <silent> <space> :<C-u>LeaderGuide mapleader<CR>
    nnoremap ; :
+   autocmd FileType c,cpp setlocal
+              \ tabstop=4
+              \ shiftwidth=4
+              \ softtabstop=4
 
 endfunction

@@ -111,6 +111,7 @@ function installVim8() {
         cd vim
         sudo make uninstall
         make clean
+        make distclean
         git reset --hard
         git pull
     else
@@ -139,6 +140,11 @@ function installVim8() {
 function installSpacevim() {
     sh -c "$(curl -fsSL https://raw.githubusercontent.com/liuchengxu/space-vim/master/install.sh)"
     rm ~/.spacevim && ln -s ~/mintenv/spacevim ~/.spacevim
+}
+
+function installOhmyzsh() {
+    sudo apt install zsh
+    sh -c "$(curl -fsSL https://raw.github.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
 }
 
 function main()
