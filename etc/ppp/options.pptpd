@@ -1,0 +1,21 @@
+name lilinpptpd                        #自行设定的VPN服务器的名字，可以任意  
+#refuse-pap                        #拒绝pap身份验证  
+refuse-chap                      #拒绝chap身份验证  
+refuse-mschap                 #拒绝mschap身份验证  
+#require-mschap-v2             #为了最高的安全性，我们使用mschap-v2身份验证方法  
+#require-mppe-128              #使用128位MPPE加密  
+ms-dns 8.8.8.8                   #设置DNS  
+ms-dns 114.114.114.114  
+proxyarp                            #启用ARP代理，如果分配给客户端的IP与内网卡同一个子网  
+ipcp-accept-remote
+ipcp-accept-local
+debug                              #关闭debug  
+lock  
+nobsdcomp  
+novj  
+novjccomp  
+nologfd
+lcp-echo-failure 10
+lcp-echo-interval 30
+#nologfd                            #不输入运行信息到stderr  
+logfile /var/log/pptpd.log    #存放pptpd服务运行的的日志 
