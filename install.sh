@@ -15,7 +15,9 @@ function configMirrors()
 function installBasicTools()
 {
     echo "install basic tools"
-    sudo apt install vim openssh-server openssh-client git git-svn git-remote-hg subversion mercurial hgsvn hgsubversion mercurial-git mercurial-server curl wget samba nfs-kernel-server xinetd tftp-hpa tftpd-hpa lrzsz minicom manpages-zh firefox-locale-zh-hans expect axel dos2unix ack-grep -y
+    sudo apt install vim openssh-server openssh-client git git-svn git-remote-hg subversion mercurial hgsvn \
+        hgsubversion mercurial-git mercurial-server curl wget samba nfs-kernel-server xinetd tftp-hpa \
+        tftpd-hpa lrzsz minicom manpages-zh firefox-locale-zh-hans expect axel dos2unix ack-grep -y
     sudo apt install silversearcher-ag  -y
     git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
     ~/.fzf/install
@@ -30,7 +32,8 @@ function installBasicTools()
 function installDevTools()
 {
     echo "install dev libs and tools"
-    sudo apt install ia32-libs libncurses5-dev gcc-multilib g++-multilib g++-5-multilib gcc-5-doc libstdc++6-5-dbg kernel-package linux-source libstdc++-5-doc binutils build-essential cpio u-boot-tools kernel-common openjdk-9-jdk wireshark nmap libpcap-dev -y
+    sudo apt install ia32-libs libncurses5-dev gcc-multilib g++-multilib g++-5-multilib gcc-5-doc libstdc++6-5-dbg \
+        kernel-package linux-source libstdc++-5-doc binutils build-essential cpio u-boot-tools kernel-common openjdk-9-jdk wireshark nmap libpcap-dev -y
     sudo apt install ctags cscope
 }
 
@@ -38,13 +41,17 @@ function installVPN()
 {
     echo "install VPN"
     sudo apt install pppoe pptpd xl2tpd -y
-    openswan_pkg=openswan-*.tar.*
-    [ -f $openswan_pkg ] || wget https://download.openswan.org/openswan/openswan-latest.tar.gz
-    tar xf openswan-latest.tar.gz
-    cd openswan-*
-    sudo make programs uninstall
-    sudo make programs install
-    cd ..
+    wget https://raw.github.com/philpl/setup-simple-ipsec-l2tp-vpn/master/setup.sh
+    sudo sh setup.sh
+    sudo cp -rf etc/{ppp,pptpd.conf,xl2tpd} /etc/
+    # openswan_pkg=openswan-*.tar.*
+    # [ -f $openswan_pkg ] || wget https://download.openswan.org/openswan/openswan-latest.tar.gz
+    # tar xf openswan-latest.tar.gz
+    # cd openswan-*
+    # sudo make programs uninstall
+    # sudo make programs install
+    # cd ..
+
 }
 
 function createUser()
@@ -111,8 +118,8 @@ function installVim8() {
         cd vim
     fi
 
-    python2_config_dir=/usr/lib/python2.7/config-*
-    python3_config_dir=/usr/lib/python3.5/config-*
+    python2_config_dir=/usr/lib/python2.7/config*
+    python3_config_dir=/usr/lib/python3.5/config*
     ./configure --with-features=huge \
         --enable-multibyte \
         --enable-rubyinterp=yes \
@@ -129,7 +136,7 @@ function installVim8() {
     echo "end install vim8"
 }
 
-function installSpace-vim() {
+function installSpacevim() {
     sh -c "$(curl -fsSL https://raw.githubusercontent.com/liuchengxu/space-vim/master/install.sh)"
     rm ~/.spacevim && ln -s ~/mintenv/spacevim ~/.spacevim
 }
@@ -143,6 +150,7 @@ function main()
             installDevTools
             #installVim8
             installVPN
+            installSpacevim
         ;;
         vim8)
             installVim8
@@ -159,6 +167,7 @@ function main()
             installDevTools
             installVPN
             installVim8
+            installSpacevim
             createUser $2
         ;;
         *)
