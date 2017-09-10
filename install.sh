@@ -154,6 +154,7 @@ function main()
         ;;
         vim8)
             installVim8
+            installSpacevim
         ;;
         adduser)
             createUser $2
