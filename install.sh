@@ -119,8 +119,8 @@ function installVim8() {
         cd vim
     fi
 
-    python2_config_dir=/usr/lib/python2.7/config*
-    python3_config_dir=/usr/lib/python3.5/config*
+    python2_config_dir=`sudo find /usr/lib -type d -a -regex ".*python2.7/config.*"`
+    python3_config_dir=`sudo find /usr/lib -type d -a -regex ".*python3.5/config.*"`
     ./configure --with-features=huge \
         --enable-multibyte \
         --enable-rubyinterp=yes \
