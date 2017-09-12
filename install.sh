@@ -79,10 +79,10 @@ function createUser()
     echo "Then you can login and del the old user with typing this:"
     echo ""
     echo "su - $user"
-    echo "cd ~/mintenv && bash install.sh deluser $user"
+    echo "cd ~/mintenv && bash install.sh deluser $USER"
     echo ""
     echo "Rebooting now ............."
-    sleep 2
+    sleep 4
     sudo reboot now
 }
 

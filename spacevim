@@ -19,12 +19,13 @@ function! Layers()
   Layer 'code-snippets'
   Layer 'deoplete'
   Layer 'markdown'
+  Layer 'javascript'
   Layer 'python'
   Layer 'chinese'
   Layer 'airline'
   Layer 'git'
   Layer 'github'
-  "Layer 'ctrlp'
+  Layer 'ctrlp'
   Layer 'file-manager'
   Layer 'lightline'
   Layer 'text-align'
@@ -51,6 +52,37 @@ function! UserInit()
    Plug 'chemzqm/denite-git'
 
    Plug 'hecal3/vim-leader-guide'
+   Plug 'bling/vim-bufferline'
+
+   let g:mouse_a=1
+   let g:list_show=0
+
+   function MouseToggle()
+        if g:mouse_a==0
+            let g:mouse_a=1
+            set mouse=a
+            echo "set mouse=a \"现在你可以用鼠标交互."
+        else
+            let g:mouse_a=0
+            set mouse=c
+            echo "set mouse=c \"现在你可以复制文字."
+        endif
+   endfunction
+
+   function ListToggle()
+        if g:list_show==0
+            let g:list_show=1
+            set list
+            " set listchars=tab:\│\ ,trail:•,extends:#,nbsp:· " Highlight problematic whitespace, tab: ›"
+            echo "set list \"显示符号."
+        else
+            let g:list_show=0
+            set nolist
+            echo "set nolist \"不显示符号."
+        endif
+    endfunction
+
+
 
 endfunction
 
@@ -69,4 +101,32 @@ function! UserConfig()
               \ shiftwidth=4
               \ softtabstop=4
 
+    """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+    " cscope setting
+    " """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+    if has("cscope")
+        set csprg=/usr/bin/cscope
+        set csto=1
+        set cst
+        set nocsverb
+        " add any database in current directory
+        if filereadable("cscope.out")
+            cs add cscope.out
+        endif
+        set csverb
+    endif
+
+    nnoremap .u          :AsyncRun find . -name "*.[Sch]" > cscope.files ; ctags -R ; cscope -Rbkq ; cscope reset<CR>
+    nnoremap .. :cs find 
+    nnoremap .s :cs find s <C-R>=expand("<cword>")<CR><CR>
+    nnoremap .g :cs find g <C-R>=expand("<cword>")<CR><CR>
+    nnoremap .c :cs find c <C-R>=expand("<cword>")<CR><CR>
+    nnoremap .t :cs find t <C-R>=expand("<cword>")<CR><CR>
+    nnoremap .e :cs find e <C-R>=expand("<cword>")<CR><CR>
+    nnoremap .f :cs find f <C-R>=expand("<cfile>")<CR><CR>
+    nnoremap .i :cs find i ^<C-R>=expand("<cfile>")<CR>$<CR>
+    nnoremap .d :cs find d <C-R>=expand("<cword>")<CR><CR>
+
+    nnoremap .l :call ListToggle()<CR>
+    nnoremap .m :call MouseToggle()<CR>
 endfunction
