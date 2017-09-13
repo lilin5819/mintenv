@@ -44,14 +44,6 @@ function installVPN()
     wget https://raw.github.com/philpl/setup-simple-ipsec-l2tp-vpn/master/setup.sh
     sudo sh setup.sh
     sudo cp -rf etc/{ppp,pptpd.conf,xl2tpd} /etc/
-    # openswan_pkg=openswan-*.tar.*
-    # [ -f $openswan_pkg ] || wget https://download.openswan.org/openswan/openswan-latest.tar.gz
-    # tar xf openswan-latest.tar.gz
-    # cd openswan-*
-    # sudo make programs uninstall
-    # sudo make programs install
-    # cd ..
-
 }
 
 function createUser()
@@ -72,7 +64,9 @@ function createUser()
     echo "please input you samba passwd:"
     sudo smbpasswd -a $user
     sudo systemctl restart smbd
-    eval "sudo sed -i 's/.*\(-.*\)/${user}\1/g' /etc/hostname"
+    eval "sudo sed -i 's/${USER}/${user}/g' /etc/hostname"
+    eval "sudo sed -i 's/${USER}/${user}/g' /etc/hosts"
+    eval "sudo sed -i 's/${USER}/${user}/g' `ag -l lilin`"
     echo ""
     echo "Success ! You has add a new user: $user!"
     echo "Now ,Your hostname is $user-VB,please reboot to refresh hostname!"
@@ -147,6 +141,12 @@ function installOhmyzsh() {
     sh -c "$(curl -fsSL https://raw.github.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
 }
 
+function acenv() {
+    sudo apt install gcc-arm-linux-gnueabi gcc-mips-linux-gnu -y
+    sudo ln -s /usr/bin/arch /bin/arch
+    sudo ln -s /usr/bin/arm-linux-gnueabi-strip ~/bin/strip
+}
+
 function main()
 {
     case $1 in
@@ -168,6 +168,12 @@ function main()
         deluser)
             delUser $2
         ;;
+        zsh)
+            installOhmyzsh
+        ;;
+        acenv)
+            acenv
+        ;;
         all)
             configMirrors
             installBasicTools
@@ -175,6 +181,7 @@ function main()
             installVPN
             installVim8
             installSpacevim
+            installOhmyzsh
             createUser $2
         ;;
         *)

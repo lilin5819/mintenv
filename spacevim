@@ -116,7 +116,7 @@ function! UserConfig()
         set csverb
     endif
 
-    nnoremap .u          :AsyncRun find . -name "*.[Sch]" > cscope.files ; ctags -R ; cscope -Rbkq ; cscope reset<CR>
+    nnoremap .u          :AsyncRun find .  -name "*.[Sch]" -a -type f > cscope.files ; ctags -R ; cscope -Rbkq ; cscope reset<CR>
     nnoremap .. :cs find 
     nnoremap .s :cs find s <C-R>=expand("<cword>")<CR><CR>
     nnoremap .g :cs find g <C-R>=expand("<cword>")<CR><CR>
