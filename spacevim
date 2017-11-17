@@ -12,12 +12,12 @@ function! Layers()
 
   Layer 'editing'
   Layer 'programming'
-  Layer 'c-c++'
+  "Layer 'c-c++'
+  "Layer 'auto-completion'
   Layer 'syntax-checking'
-  Layer 'auto-completion'
-  "Layer 'ycmd'
+  Layer 'ycmd'      " 与 auto-completion/code-snippets/deoplete 有冲突
   Layer 'code-snippets'
-  Layer 'deoplete'
+  "Layer 'deoplete'
   Layer 'markdown'
   Layer 'javascript'
   Layer 'python'
@@ -25,7 +25,7 @@ function! Layers()
   Layer 'airline'
   Layer 'git'
   Layer 'github'
-  Layer 'ctrlp'
+  "Layer 'ctrlp'
   Layer 'file-manager'
   Layer 'lightline'
   Layer 'text-align'
@@ -47,12 +47,20 @@ function! UserInit()
   " Install private plugins
   " Plug 'extr0py/oni'
 
-   Plug 'Shougo/denite.nvim'
+   "Plug 'Shougo/denite.nvim'
    Plug 'chemzqm/vim-easygit'
-   Plug 'chemzqm/denite-git'
+   "Plug 'chemzqm/denite-git'
 
    Plug 'hecal3/vim-leader-guide'
    Plug 'bling/vim-bufferline'
+   Plug 'maksimr/vim-jsbeautify'
+
+   Plug 'luochen1990/rainbow'  "彩虹括号
+   "Plug 'luzhlon/popup.vim'  "弹出菜单
+   Plug 'aperezdc/vim-template'
+   Plug 'vim-scripts/DoxygenToolkit.vim'
+
+   let g:templates_directory = '/home/lilin/Templates'
 
    let g:mouse_a=1
    let g:list_show=0
@@ -82,8 +90,6 @@ function! UserInit()
         endif
     endfunction
 
-
-
 endfunction
 
 " Put your costom configurations here, e.g., change the colorscheme.
@@ -93,7 +99,41 @@ function! UserConfig()
    let g:airline_powerline_fonts=1
   " color molokai
   " color desert
+  let g:ycm_global_ycm_extra_conf='~/.ycm_extra_conf.py'
+  let g:ycm_confirm_extra_conf=0
+  "let g:ycm_min_num_of_chars_for_completion=2 " 从第2个键入字符就开始罗列匹配项
+  "let g:ycm_always_populate_location_list = 1
+  let g:ycm_key_invoke_completion = '<C-l>'
+  let g:ycm_seed_identifiers_with_syntax=1  " 语法关键字补全"
+  let g:ycm_use_ultisnips_completer = 1
 
+  let g:UltiSnipsListSnippets = '<C-k>'
+  let g:UltiSnipsJumpForwardTrigger = '<C-j>'
+  let g:UltiSnipsJumpBackwardTrigger = '<C-k>'
+  "let g:ycm_cache_omnifunc=0
+  ""let g:ycm_collect_identifiers_from_tags_files=1 " 开启 YCM 基于标签引擎
+  "let g:ycm_min_num_of_chars_for_completion=2 " 从第2个键入字符就开始罗列匹配项
+  "let g:ycm_seed_identifiers_with_syntax=1  " 语法关键字补全"
+  "let g:ycm_always_populate_location_list = 1
+  " 自动补全配置
+  " set completeopt=longest,menu
+  " "让Vim的补全菜单行为与一般IDE一致(参考VimTip1228)
+  " autocmd InsertLeave * if pumvisible() == 0|pclose|endif
+  " "离开插入模式后自动关闭预览窗口
+  " inoremap <expr> <CR>       pumvisible() ? "\<C-y>" : "\<CR>"
+  " "回车即选中当前项
+  " "上下左右键的行为 会显示其他信息
+  " inoremap <expr> <Down>     pumvisible() ? "\<C-n>" : "\<Down>"
+  " inoremap <expr> <Up>       pumvisible() ? "\<C-p>" : "\<Up>"
+  " inoremap <expr> <PageDown> pumvisible() ? "\<PageDown>\<C-p>\<C-n>" :
+  " "\<PageDown>"
+  " inoremap <expr> <PageUp>   pumvisible() ? "\<PageUp>\<C-p>\<C-n>" :
+  " "\<PageUp>"
+
+   nnoremap <Leader>wn <C-w>w
+   nnoremap <Leader>tn :tabNext<CR>
+   nnoremap <Leader>te :tabedit
+   nnoremap <Leader>fj :call JsBeautify()<CR>
    nnoremap <silent> <space> :<C-u>LeaderGuide mapleader<CR>
    nnoremap ; :
    autocmd FileType c,cpp setlocal
@@ -116,8 +156,8 @@ function! UserConfig()
         set csverb
     endif
 
-    nnoremap .u          :AsyncRun find .  -name "*.[Sch]" -a -type f > cscope.files ; ctags -R ; cscope -Rbkq ; cscope reset<CR>
-    nnoremap .. :cs find 
+    nnoremap .u          :AsyncRun find .  -name "*.[Sch]" -a -type f > cscope.files ; ctags -R ; cscope -Rbkq -i cscope.files
+    nnoremap .. :cs find
     nnoremap .s :cs find s <C-R>=expand("<cword>")<CR><CR>
     nnoremap .g :cs find g <C-R>=expand("<cword>")<CR><CR>
     nnoremap .c :cs find c <C-R>=expand("<cword>")<CR><CR>
@@ -127,6 +167,8 @@ function! UserConfig()
     nnoremap .i :cs find i ^<C-R>=expand("<cfile>")<CR>$<CR>
     nnoremap .d :cs find d <C-R>=expand("<cword>")<CR><CR>
 
+    nnoremap .a :AsyncRun
     nnoremap .l :call ListToggle()<CR>
     nnoremap .m :call MouseToggle()<CR>
+
 endfunction

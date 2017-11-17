@@ -141,10 +141,14 @@ function installOhmyzsh() {
     sh -c "$(curl -fsSL https://raw.github.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
 }
 
-function acenv() {
+function installAcEnv() {
     sudo apt install gcc-arm-linux-gnueabi gcc-mips-linux-gnu -y
-    sudo ln -s /usr/bin/arch /bin/arch
-    sudo ln -s /usr/bin/arm-linux-gnueabi-strip ~/bin/strip
+    [ -d ~/bin ] || mkdir -p ~/bin
+    sudo ln -sf /usr/bin/arch /bin/arch
+    sudo ln -sf /usr/bin/arm-linux-gnueabi-strip ~/bin/strip
+    echo "please select NO !!!!!!!!!"
+    sleep 3
+    sudo dpkg-reconfigure dash
 }
 
 function main()
@@ -157,6 +161,7 @@ function main()
             #installVim8
             installVPN
             installSpacevim
+            installAcEnv
         ;;
         vim8)
             installVim8
@@ -172,7 +177,7 @@ function main()
             installOhmyzsh
         ;;
         acenv)
-            acenv
+            installAcEnv
         ;;
         all)
             configMirrors
@@ -182,6 +187,7 @@ function main()
             installVim8
             installSpacevim
             installOhmyzsh
+            installAcEnv
             createUser $2
         ;;
         *)
