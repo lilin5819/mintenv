@@ -184,7 +184,7 @@ function main()
             installBasicTools
             installDevTools
             installVPN
-            installVim8
+            #installVim8
             installSpacevim
             installOhmyzsh
             installAcEnv
