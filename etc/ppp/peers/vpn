@@ -1,0 +1,5 @@
+name lilin
+password lilin
+remotename PPTP
+replacedefaultroute
+pty "pptp 192.168.10.1"

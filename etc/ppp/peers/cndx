@@ -1,0 +1,9 @@
+# written by pptpsetup
+pty "pptp 192.168.10.1 --nolaunchpppd"
+lock
+noauth
+nobsdcomp
+nodeflate
+name lilin
+remotename cndx
+ipparam cndx

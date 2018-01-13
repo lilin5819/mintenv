@@ -1,4 +1,4 @@
-auth
-require-pap
-require-chap
-logfile /var/log/pppd.log
+auth  
+require-pap     
+require-chap     
+logfile /var/log/pppd.log 

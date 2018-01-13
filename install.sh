@@ -40,10 +40,10 @@ function installDevTools()
 function installVPN()
 {
     echo "install VPN"
-    sudo apt install pppoe pptpd xl2tpd -y
-    wget https://raw.github.com/philpl/setup-simple-ipsec-l2tp-vpn/master/setup.sh
-    sudo sh setup.sh
-    sudo cp -rf etc/{ppp,pptpd.conf,xl2tpd} /etc/
+    sudo apt install udhcpd pppoe pptpd xl2tpd -y
+    wget https://raw.github.com/philpl/setup-simple-ipsec-l2tp-vpn/master/setup.sh && sudo sh setup.sh
+    sudo cp -rf etc/{ppp,pptpd.conf,xl2tpd,udhcpd.conf} /etc/
+    sudo cp -rf etc/default/udhcpd /etc/default/
 }
 
 function createUser()
@@ -155,13 +155,13 @@ function main()
 {
     case $1 in
         env)
-            configMirrors
             installBasicTools
             installDevTools
-            #installVim8
             installVPN
-            installSpacevim
             installAcEnv
+        ;;
+        vpn)
+            installVPN
         ;;
         vim8)
             installVim8
@@ -192,6 +192,7 @@ function main()
         ;;
         *)
             echo "Usage: $0 env                   # install develop envs"
+            echo "       $0 vpn                  # install udhcp pppoe l2tp"
             echo "       $0 vim8                  # install vim8 with python、python3、ruby、perl、lua support,and other features."
             echo "       $0 adduser <username>    # create a user named <username>"
             echo "       $0 deluser <username>    # del a user named <username>"

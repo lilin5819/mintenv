@@ -1,4 +1,4 @@
-ervice tftp
+service tftp
 {
     disable = no
     socket_type = dgram
