@@ -29,10 +29,22 @@ function installBasicTools()
     sudo systemctl restart smbd xinetd tftpd-hpa
 }
 
+function installOpengrok()
+{
+    URL_OPENGROK=https://github.com/oracle/opengrok/releases/download/1.1-rc18/opengrok-1.1-rc18.tar.gz
+    PKG_OPENGROK=$(basename ${URL_OPENGROK})
+    sudo apt install opendjk8-jdk  -y
+    sudo apt remove sudo apt remove --purge openjdk-9-jre-headless openjdk-9-jdk-headless -y
+    sudo wget https://github.com/oracle/opengrok/releases/download/1.1-rc18/opengrok-1.1-rc18.tar.gz
+    sudo tar xf ${PKG_OPENGROK} -C /opt/
+    sudo echo -e "PATH=\$PATH:/opt/$PKG_OPENGROK" >> ~/.$(basename ${SHELL})rc
+    sudo OPENGROK_TOMCAT_BASE=/var/lib/tomcat8 /opt/${PKG_OPENGROK}/bin/OpenGrok deploy
+}
+
 function installDevTools()
 {
     echo "install dev libs and tools"
-    sudo apt install ia32-libs libncurses5-dev gcc-multilib g++-multilib g++-5-multilib gcc-5-doc libstdc++6-5-dbg \
+    sudo apt install ia32-libs automake autoconf llvm cmake libncurses5-dev gcc-multilib g++-multilib g++-5-multilib gcc-5-doc libstdc++6-5-dbg \
         kernel-package linux-source libstdc++-5-doc binutils build-essential cpio u-boot-tools kernel-common openjdk-9-jdk wireshark nmap libpcap-dev -y
     sudo apt install ctags cscope
 }

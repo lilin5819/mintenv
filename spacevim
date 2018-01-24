@@ -12,10 +12,10 @@ function! Layers()
 
   Layer 'editing'
   Layer 'programming'
-  "Layer 'c-c++'
-  "Layer 'auto-completion'
+  Layer 'c-c++'
+  Layer 'auto-completion'
   Layer 'syntax-checking'
-  Layer 'ycmd'      " 与 auto-completion/code-snippets/deoplete 有冲突
+  "Layer 'ycmd'      " 与 auto-completion/code-snippets/deoplete 有冲突
   Layer 'code-snippets'
   "Layer 'deoplete'
   Layer 'markdown'
@@ -59,6 +59,7 @@ function! UserInit()
    "Plug 'luzhlon/popup.vim'  "弹出菜单
    Plug 'aperezdc/vim-template'
    Plug 'vim-scripts/DoxygenToolkit.vim'
+   Plug 'justmao945/vim-clang'
 
    let g:templates_directory = '/home/lilin/Templates'
 
@@ -94,6 +95,16 @@ endfunction
 
 " Put your costom configurations here, e.g., change the colorscheme.
 function! UserConfig()
+"	 if has('termguicolors')
+"			set termguicolors
+"			if g:spacevim_tmux
+"				" If use vim inside tmux, see https://github.com/vim/vim/issues/993
+"				" set Vim-specific sequences for RGB colors
+"				let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
+"				let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
+"			endif
+"		endif
+
 
   " If you enable airline layer and have installed the powerline fonts, set it here.
    let g:airline_powerline_fonts=1
@@ -144,19 +155,18 @@ function! UserConfig()
     """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
     " cscope setting
     " """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-    if has("cscope")
-        set csprg=/usr/bin/cscope
-        set csto=1
-        set cst
-        set nocsverb
-        " add any database in current directory
-        if filereadable("cscope.out")
-            cs add cscope.out
-        endif
-        set csverb
+    "set cscopetag=gtags-cscope
+    set cscopeprg=gtags-cscope
+    if filereadable("GTAGS")
+        "cs add cscope.out
+        cs add GTAGS
     endif
+    set csto=0
+    set cst
+    set csverb
+    "set cscopequickfix=c-,d-,e-,f-,g0,i-,s-,t-
 
-    nnoremap .u          :AsyncRun find .  -name "*.[Sch]" -a -type f > cscope.files ; ctags -R ; cscope -Rbkq -i cscope.files
+    "nnoremap .u          :AsyncRun find .  -name "*.[Sch]" -a -type f > cscope.files ; ctags -R ; cscope -Rbkq -i cscope.files
     nnoremap .. :cs find
     nnoremap .s :cs find s <C-R>=expand("<cword>")<CR><CR>
     nnoremap .g :cs find g <C-R>=expand("<cword>")<CR><CR>
